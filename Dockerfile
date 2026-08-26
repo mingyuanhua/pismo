@@ -10,3 +10,5 @@ COPY scripts scripts
 COPY src src
 
 ENV PYTHONPATH=/app/src
+
+CMD ["python", "-m", "event_processor.consumer"]

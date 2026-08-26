@@ -28,3 +28,13 @@ services:
     depends_on:
       localstack:
         condition: service_healthy
+
+  processor:
+    build: .
+    environment:
+      <<: *aws-environment
+      QUEUE_URL: http://localstack:4566/000000000000/events
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    restart: unless-stopped
