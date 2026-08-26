@@ -1,0 +1,4 @@
+boto3==1.40.21
+jsonschema==4.25.1
+pytest==8.4.1
+
