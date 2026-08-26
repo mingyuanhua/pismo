@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "payment.authorized payload",
+  "type": "object",
+  "required": ["payment_id", "amount", "currency"],
+  "properties": {
+    "payment_id": { "type": "string", "minLength": 1 },
+    "amount": { "type": "number", "exclusiveMinimum": 0 },
+    "currency": { "type": "string", "pattern": "^[A-Z]{3}$" }
+  },
+  "additionalProperties": false
+}
+
