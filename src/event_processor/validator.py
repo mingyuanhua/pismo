@@ -6,6 +6,10 @@ from typing import Any
 from jsonschema import Draft202012Validator, FormatChecker
 
 
+def _reject_non_json_number(value: str) -> None:
+    raise ValueError(f"invalid JSON number: {value}")
+
+
 class EventValidationError(ValueError):
     def __init__(self, category: str, detail: str):
         self.category = category
@@ -35,8 +39,12 @@ class EventValidator:
     def validate(self, message_body: str) -> dict[str, Any]:
         try:
             # Decimal preserves JSON numbers and is accepted by DynamoDB's serializer.
-            event = json.loads(message_body, parse_float=Decimal)
-        except (json.JSONDecodeError, TypeError) as error:
+            event = json.loads(
+                message_body,
+                parse_float=Decimal,
+                parse_constant=_reject_non_json_number,
+            )
+        except (ValueError, TypeError) as error:
             raise EventValidationError("malformed_json", str(error)) from error
 
         envelope_error = next(self.envelope_validator.iter_errors(event), None)

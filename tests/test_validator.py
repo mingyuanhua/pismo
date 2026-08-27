@@ -71,7 +71,8 @@ def test_invalid_payment_payload(validator):
 
 
 def test_malformed_json(validator):
-    with pytest.raises(EventValidationError) as caught:
-        validator.validate("not-json")
+    for message_body in ("not-json", "NaN", "Infinity", "-Infinity"):
+        with pytest.raises(EventValidationError) as caught:
+            validator.validate(message_body)
 
-    assert caught.value.category == "malformed_json"
+        assert caught.value.category == "malformed_json"

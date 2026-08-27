@@ -11,8 +11,6 @@ class Settings:
 
 
 def load_settings() -> Settings:
-    # LocalStack defaults keep scripts runnable without an AWS account; deployed
-    # environments override the same values through environment variables.
     return Settings(
         aws_endpoint_url=os.getenv("AWS_ENDPOINT_URL", "http://localhost:4566"),
         aws_region=os.getenv("AWS_REGION", "us-east-1"),
